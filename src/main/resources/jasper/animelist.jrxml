@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.19.1.final using JasperReports Library version 6.19.1-867c00bf88cd4d784d404379d6c05e1b419e8a4c  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="example" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="2f6e4db4-9f8f-4ffe-9759-6e1fd142f492">
+    <property name="template.type" value="columnar"/>
+    <property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+    <property name="com.jaspersoft.studio.data.defaultdataadapter" value="example jasper report anime list"/>
+    <style name="Title" forecolor="#000000" fontName="Times New Roman" fontSize="50" isBold="false"/>
+    <style name="SubTitle" forecolor="#666666" fontName="Times New Roman" fontSize="18" isBold="false"/>
+    <style name="Column header" forecolor="#666666" fontName="Times New Roman" fontSize="14" isBold="true"/>
+    <style name="Detail" mode="Transparent" fontName="Times New Roman"/>
+    <style name="Row" mode="Transparent" fontName="Times New Roman" pdfFontName="Times-Roman">
+        <conditionalStyle>
+            <conditionExpression><![CDATA[$V{REPORT_COUNT}%2 == 0]]></conditionExpression>
+            <style mode="Opaque" backcolor="#F0EFEF"/>
+        </conditionalStyle>
+    </style>
+    <field name="id" class="java.lang.String">
+    </field>
+    <field name="genre" class="java.lang.String">
+    </field>
+    <field name="producer" class="java.lang.String">
+    </field>
+    <field name="releaseDate" class="java.time.LocalDate">
+    </field>
+    <field name="score" class="java.lang.Double">
+    </field>
+    <field name="status" class="java.lang.String">
+    </field>
+    <field name="studio" class="java.lang.String">
+    </field>
+    <field name="title" class="java.lang.String">
+    </field>
+    <field name="totalEpisodes" class="java.lang.Integer">
+    </field>
+    <background>
+        <band splitType="Stretch"/>
+    </background>
+    <title>
+        <band height="132" splitType="Stretch">
+            <image>
+                <reportElement x="2" y="0" width="118" height="132" uuid="d47168ce-aae1-4efc-8d24-e15195025a5a"/>
+                <imageExpression><![CDATA["./image/anime1.png"]]></imageExpression>
+            </image>
+            <staticText>
+                <reportElement style="Title" x="120" y="10" width="435" height="93" uuid="f49d68fd-a2c7-44ec-a5fc-9300d10c85a1"/>
+                <textElement>
+                    <font size="80" isBold="false"/>
+                </textElement>
+                <text><![CDATA[CoffeKyun]]></text>
+            </staticText>
+            <staticText>
+                <reportElement style="SubTitle" x="336" y="103" width="217" height="29" uuid="eef58983-008d-4a5b-8e47-97f8d4670c7a"/>
+                <textElement>
+                    <font size="22" isBold="false"/>
+                </textElement>
+                <text><![CDATA[list of all anime]]></text>
+            </staticText>
+        </band>
+    </title>
+    <pageHeader>
+        <band splitType="Stretch"/>
+    </pageHeader>
+    <columnHeader>
+        <band splitType="Stretch"/>
+    </columnHeader>
+    <detail>
+        <band height="180" splitType="Stretch">
+            <image>
+                <reportElement x="2" y="0" width="77" height="98" uuid="a0221c49-fb14-4d48-97e4-11333b968c72"/>
+                <imageExpression><![CDATA["./image/anime2.png"]]></imageExpression>
+            </image>
+            <staticText>
+                <reportElement style="Column header" positionType="Float" x="79" y="0" width="132" height="20" forecolor="#000000" uuid="92418ea2-ddb1-4669-ba11-b632e038243b"/>
+                <textElement textAlignment="Right">
+                    <font isBold="false"/>
+                </textElement>
+                <text><![CDATA[Id Anime]]></text>
+            </staticText>
+            <textField textAdjust="StretchHeight" isBlankWhenNull="true">
+                <reportElement style="Detail" positionType="Float" x="215" y="0" width="338" height="18" uuid="62b68de0-d642-4840-949c-a6b794abfb08"/>
+                <textElement>
+                    <font size="14" isBold="true"/>
+                </textElement>
+                <textFieldExpression><![CDATA[$F{id}]]></textFieldExpression>
+            </textField>
+            <staticText>
+                <reportElement style="Column header" positionType="Float" x="79" y="20" width="132" height="20" forecolor="#000000" uuid="3de986ff-c3aa-4c8f-97bf-a857412efbca"/>
+                <textElement textAlignment="Right">
+                    <font isBold="false"/>
+                </textElement>
+                <text><![CDATA[Genre]]></text>
+            </staticText>
+            <textField textAdjust="StretchHeight" isBlankWhenNull="true">
+                <reportElement style="Detail" positionType="Float" x="215" y="20" width="338" height="18" uuid="f980a99f-5e68-4017-8a56-1a48f14b2a7d"/>
+                <textElement>
+                    <font size="14" isBold="true"/>
+                </textElement>
+                <textFieldExpression><![CDATA[$F{genre}]]></textFieldExpression>
+            </textField>
+            <staticText>
+                <reportElement style="Column header" positionType="Float" x="79" y="40" width="132" height="20" forecolor="#000000" uuid="b0db4f46-67ad-4592-b732-f4c93805f5e0"/>
+                <textElement textAlignment="Right">
+                    <font isBold="false"/>
+                </textElement>
+                <text><![CDATA[Producer]]></text>
+            </staticText>
+            <textField textAdjust="StretchHeight" isBlankWhenNull="true">
+                <reportElement style="Detail" positionType="Float" x="215" y="40" width="338" height="18" uuid="95ce2ebc-89f7-4b96-84e8-aeaaa03b13f2"/>
+                <textElement>
+                    <font size="14" isBold="true"/>
+                </textElement>
+                <textFieldExpression><![CDATA[$F{producer}]]></textFieldExpression>
+            </textField>
+            <staticText>
+                <reportElement style="Column header" positionType="Float" x="79" y="60" width="132" height="20" forecolor="#000000" uuid="d04ff346-4040-4c19-97e3-1bb52ced9501"/>
+                <textElement textAlignment="Right">
+                    <font isBold="false"/>
+                </textElement>
+                <text><![CDATA[Release Date]]></text>
+            </staticText>
+            <textField textAdjust="StretchHeight" isBlankWhenNull="true">
+                <reportElement style="Detail" positionType="Float" x="215" y="60" width="338" height="18" uuid="75a4c337-7fe4-4236-9d78-1c487811273d"/>
+                <textElement>
+                    <font size="14" isBold="true"/>
+                </textElement>
+                <textFieldExpression><![CDATA[$F{releaseDate}]]></textFieldExpression>
+            </textField>
+            <staticText>
+                <reportElement style="Column header" positionType="Float" x="79" y="80" width="132" height="20" forecolor="#000000" uuid="5cd824fc-1ee1-4914-8bcc-5d876e01c9b2"/>
+                <textElement textAlignment="Right">
+                    <font isBold="false"/>
+                </textElement>
+                <text><![CDATA[Score]]></text>
+            </staticText>
+            <textField textAdjust="StretchHeight" isBlankWhenNull="true">
+                <reportElement style="Detail" positionType="Float" x="215" y="80" width="338" height="18" uuid="12324f72-7def-4b84-aaea-7acc9d64113f"/>
+                <textElement>
+                    <font size="14" isBold="true"/>
+                </textElement>
+                <textFieldExpression><![CDATA[$F{score}]]></textFieldExpression>
+            </textField>
+            <staticText>
+                <reportElement style="Column header" positionType="Float" x="79" y="100" width="132" height="20" forecolor="#000000" uuid="506404eb-6453-44c3-9d6d-c9f57722e453"/>
+                <textElement textAlignment="Right">
+                    <font isBold="false"/>
+                </textElement>
+                <text><![CDATA[Status]]></text>
+            </staticText>
+            <textField textAdjust="StretchHeight" isBlankWhenNull="true">
+                <reportElement style="Detail" positionType="Float" x="215" y="100" width="338" height="18" uuid="36b90789-2556-41b6-9f84-df08765d4abe"/>
+                <textElement>
+                    <font size="14" isBold="true"/>
+                </textElement>
+                <textFieldExpression><![CDATA[$F{status}]]></textFieldExpression>
+            </textField>
+            <staticText>
+                <reportElement style="Column header" positionType="Float" x="79" y="120" width="132" height="20" forecolor="#000000" uuid="5a3a8a89-28d5-4496-bb92-12454aa0d553"/>
+                <textElement textAlignment="Right">
+                    <font isBold="false"/>
+                </textElement>
+                <text><![CDATA[Studio]]></text>
+            </staticText>
+            <textField textAdjust="StretchHeight" isBlankWhenNull="true">
+                <reportElement style="Detail" positionType="Float" x="215" y="120" width="338" height="18" uuid="7da3944c-271b-4fd6-a254-037800a1f5be"/>
+                <textElement>
+                    <font size="14" isBold="true"/>
+                </textElement>
+                <textFieldExpression><![CDATA[$F{studio}]]></textFieldExpression>
+            </textField>
+            <staticText>
+                <reportElement style="Column header" positionType="Float" x="79" y="140" width="132" height="20" forecolor="#000000" uuid="d79b8f48-6881-401f-8189-3a63de304d87"/>
+                <textElement textAlignment="Right">
+                    <font isBold="false"/>
+                </textElement>
+                <text><![CDATA[Title]]></text>
+            </staticText>
+            <textField textAdjust="StretchHeight" isBlankWhenNull="true">
+                <reportElement style="Detail" positionType="Float" x="215" y="140" width="338" height="18" uuid="e7406434-d903-4d6e-a21d-1480c72a4bad"/>
+                <textElement>
+                    <font size="14" isBold="true"/>
+                </textElement>
+                <textFieldExpression><![CDATA[$F{title}]]></textFieldExpression>
+            </textField>
+            <staticText>
+                <reportElement style="Column header" positionType="Float" x="79" y="160" width="132" height="20" forecolor="#000000" uuid="35ce80ec-0535-4a73-b9e9-cf2ebc434c31"/>
+                <textElement textAlignment="Right">
+                    <font isBold="false"/>
+                </textElement>
+                <text><![CDATA[Total Episode]]></text>
+            </staticText>
+            <textField textAdjust="StretchHeight" isBlankWhenNull="true">
+                <reportElement style="Detail" positionType="Float" x="215" y="160" width="338" height="18" uuid="8708726b-4149-424a-bbdf-c5351dda6524"/>
+                <textElement>
+                    <font size="14" isBold="true"/>
+                </textElement>
+                <textFieldExpression><![CDATA[$F{totalEpisodes}]]></textFieldExpression>
+            </textField>
+        </band>
+    </detail>
+    <columnFooter>
+        <band height="7" splitType="Stretch">
+            <line>
+                <reportElement positionType="FixRelativeToBottom" x="0" y="3" width="555" height="1" uuid="fab082df-3ca0-43ac-900e-4da3f8b5a45d"/>
+                <graphicElement>
+                    <pen lineWidth="0.5" lineColor="#999999"/>
+                </graphicElement>
+            </line>
+        </band>
+    </columnFooter>
+    <pageFooter>
+        <band height="13" splitType="Stretch">
+            <frame>
+                <reportElement mode="Opaque" x="2" y="0" width="555" height="13" forecolor="#D0B48E" backcolor="#9DB1B8" uuid="bfdca178-800d-445c-9a31-bb616a00e8ce"/>
+                <textField evaluationTime="Report">
+                    <reportElement style="Column header" x="513" y="0" width="40" height="13" forecolor="#FFFFFF" uuid="2fba0f87-635e-476d-858f-d102b26146fe"/>
+                    <textElement verticalAlignment="Middle">
+                        <font size="10" isBold="false"/>
+                    </textElement>
+                    <textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+                </textField>
+                <textField>
+                    <reportElement style="Column header" mode="Transparent" x="433" y="0" width="80" height="13" forecolor="#FFFFFF" uuid="e454d23d-bcfc-4c79-a399-0ef520a3150a"/>
+                    <textElement textAlignment="Right" verticalAlignment="Middle">
+                        <font size="10" isBold="false"/>
+                    </textElement>
+                    <textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER}+" of"]]></textFieldExpression>
+                </textField>
+                <textField pattern="EEEEE dd MMMMM yyyy">
+                    <reportElement style="Column header" x="2" y="0" width="197" height="13" forecolor="#FFFFFF" uuid="14d8de1e-8695-4078-a67f-0e69172574d5"/>
+                    <textElement verticalAlignment="Middle">
+                        <font size="10" isBold="false"/>
+                    </textElement>
+                    <textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+                </textField>
+            </frame>
+        </band>
+    </pageFooter>
+    <summary>
+        <band splitType="Stretch"/>
+    </summary>
+</jasperReport>
