@@ -23,7 +23,7 @@ public class AnimeServiceImpl implements AnimeService {
     private AnimeRepository animeRepository;
 
     @Override
-    public byte[] generateDataAnimeById(String id) {
+    public byte[] generateDataAnimeById() {
 
         List<Anime> animes = animeRepository.findAll();
 

@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.util.List;
+import java.util.UUID;
 
 @Slf4j
 @RestController
@@ -25,19 +26,19 @@ public class AnimeController {
 
     @GetMapping(value = "/pdf",
             produces = MediaType.APPLICATION_PDF_VALUE)
-    public void reportAnime(HttpServletResponse response,  @RequestParam("id") String id) {
+    public void reportAnime(HttpServletResponse response) {
         log.info("#calling controller reportAnime");
         try {
-            byte[] animes = animeService.generateDataAnimeById(id);
+            byte[] animes = animeService.generateDataAnimeById();
             InputStream inputStream = new ByteArrayInputStream(animes);
 
-            response.addHeader("Content-Disposition", "attachment; filename=" + id +".pdf");
+            response.addHeader("Content-Disposition", "attachment; filename=" + UUID.randomUUID() +".pdf");
             response.setContentType("application/octet-stream");
 
             IOUtils.copy(inputStream, response.getOutputStream());
             response.flushBuffer();
         }catch (Exception exception) {
-            log.info("failed to generate pdf file {} ", id);
+            log.info("failed to generate pdf file");
         }
     }
 
