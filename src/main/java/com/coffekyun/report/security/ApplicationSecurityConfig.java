@@ -1,10 +1,9 @@
 package com.coffekyun.report.security;
 
-import com.coffekyun.report.model.enums.ApplicationUserPermission;
 import com.coffekyun.report.model.enums.ApplicationUserRole;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
+import org.springframework.context.annotation.Configuration;;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.core.userdetails.User;
@@ -16,6 +15,7 @@ import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
 @EnableWebSecurity
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class ApplicationSecurityConfig  {
 
     private PasswordEncoderConfiguration passwordEncoderConfiguration;
@@ -31,8 +31,8 @@ public class ApplicationSecurityConfig  {
                 .authorizeRequests()
                 .antMatchers("/", "/api/*", "index", "/css/*", "/js/*").permitAll()
                 .antMatchers("/api/anime/pdf").hasRole(ApplicationUserRole.USER.name())
-                .antMatchers(HttpMethod.POST, "/api/anime/add").hasAuthority(ApplicationUserPermission.ADMIN_WRITE.getDescription())
-                .antMatchers(HttpMethod.GET, "/api/anime/all").hasAnyRole(ApplicationUserRole.USER.name(), ApplicationUserRole.ADMIN.name(), ApplicationUserRole.ADMIN_TRAINEE.name())
+//                .antMatchers(HttpMethod.POST, "/api/anime/add").hasAuthority(ApplicationUserPermission.ADMIN_WRITE.getDescription())
+//                .antMatchers(HttpMethod.GET, "/api/anime/all").hasAnyRole(ApplicationUserRole.USER.name(), ApplicationUserRole.ADMIN.name(), ApplicationUserRole.ADMIN_TRAINEE.name())
                 .anyRequest()
                 .authenticated()
                 .and()

@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
@@ -23,6 +24,8 @@ public class AnimeController {
 
     @Autowired
     private AnimeService animeService;
+
+    // @PreAuthorize include -> hasRole('ROLE_') hasAnyRole('ROLE_') hasAuthority('permission') hasAnyAuthority('permission')
 
     @GetMapping(value = "/pdf",
             produces = MediaType.APPLICATION_PDF_VALUE)
@@ -42,6 +45,7 @@ public class AnimeController {
         }
     }
 
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_ADMIN_TRAINEE')")
     @GetMapping(
             value = "/all",
             produces = { "application/json"}
@@ -52,6 +56,7 @@ public class AnimeController {
         return new ResponseEntity<>(animes, HttpStatus.OK);
     }
 
+    @PreAuthorize("hasAuthority('admin:write')")
     @PostMapping("/add")
     ResponseEntity<Anime> insertAnime(@RequestBody Anime anime) {
         Anime insert = animeService.insert(anime);
