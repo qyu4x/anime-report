@@ -1,5 +1,6 @@
 package com.coffekyun.report.security;
 
+import com.coffekyun.report.model.enumarate.ApplicationUserRole;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.jaas.memory.InMemoryConfiguration;
@@ -41,13 +42,13 @@ public class ApplicationSecurityConfig  {
         UserDetails userKanojo = User.builder()
                 .username("kaguya")
                 .password(passwordEncoderConfiguration.passwordEncoder().encode("kanojo"))
-                .roles("KANOJO")
+                .roles(ApplicationUserRole.ROLE_USER.name())
                 .build();
 
-        UserDetails userAdmin= User.builder()
+        UserDetails userAdmin = User.builder()
                 .username("hikaru")
                 .password(passwordEncoderConfiguration.passwordEncoder().encode("kyun"))
-                .roles("ADMIN")
+                .roles(ApplicationUserRole.ROLE_ADMIN.name())
                 .build();
 
         return new InMemoryUserDetailsManager(
