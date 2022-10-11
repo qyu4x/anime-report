@@ -45,11 +45,17 @@ public class AnimeServiceImpl implements AnimeService {
     public List<Anime> getAll() {
         return animeRepository.findAll();
     }
+
     private Map<String, Object> buildParametersMap() {
         Map<String, Object> pdfInvoiceParams = new HashMap<>();
         pdfInvoiceParams.put("poweredby", "Kizuna Ai");
         return pdfInvoiceParams;
     }
 
-
+    @Override
+    public Anime insert(Anime anime) {
+        anime.setId(anime.getTitle()
+                .toLowerCase().replace(" ", "-"));
+        return animeRepository.save(anime);
+    }
 }

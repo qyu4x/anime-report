@@ -10,6 +10,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.persistence.EntityManager;
 import javax.servlet.http.HttpServletResponse;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
@@ -50,5 +51,11 @@ public class AnimeController {
     public ResponseEntity<?> getAll() {
         List<Anime> animes = animeService.getAll();
         return new ResponseEntity<>(animes, HttpStatus.OK);
+    }
+
+    @PostMapping("/add")
+    ResponseEntity<Anime> insertAnime(@RequestBody Anime anime) {
+        Anime insert = animeService.insert(anime);
+        return new ResponseEntity<>(insert, HttpStatus.OK);
     }
 }

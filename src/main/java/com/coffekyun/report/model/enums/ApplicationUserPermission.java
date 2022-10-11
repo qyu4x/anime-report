@@ -1,4 +1,4 @@
-package com.coffekyun.report.model.enumarate;
+package com.coffekyun.report.model.enums;
 
 public enum ApplicationUserPermission {
     USER_READ("user:read"),

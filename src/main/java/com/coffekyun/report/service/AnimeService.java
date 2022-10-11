@@ -9,4 +9,6 @@ public interface AnimeService {
 
     List<Anime> getAll();
 
+    Anime insert(Anime anime);
+
 }
