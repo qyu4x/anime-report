@@ -21,6 +21,7 @@ public class AnimeServiceImpl implements AnimeService {
 
     @Autowired
     private AnimeRepository animeRepository;
+
     @Override
     public byte[] generateDataAnimeById(String id) {
 
@@ -29,8 +30,9 @@ public class AnimeServiceImpl implements AnimeService {
         try {
             File design = ResourceUtils.getFile("classpath:jasper/animelist.jrxml");
             JasperReport report = JasperCompileManager.compileReport(design.getAbsolutePath());
-            
+
             JasperPrint jasperPrint = JasperFillManager.fillReport(report, buildParametersMap(), new JRBeanCollectionDataSource(animes));
+
             return JasperExportManager.exportReportToPdf(jasperPrint);
         }catch (IOException | JRException exception) {
             log.info("Error has occured {}", exception.getMessage());
@@ -39,9 +41,15 @@ public class AnimeServiceImpl implements AnimeService {
         return null;
 
     }
+    @Override
+    public List<Anime> getAll() {
+        return animeRepository.findAll();
+    }
     private Map<String, Object> buildParametersMap() {
         Map<String, Object> pdfInvoiceParams = new HashMap<>();
         pdfInvoiceParams.put("poweredby", "Kizuna Ai");
         return pdfInvoiceParams;
     }
+
+
 }
