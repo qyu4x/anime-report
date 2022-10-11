@@ -42,13 +42,13 @@ public class ApplicationSecurityConfig  {
         UserDetails userKanojo = User.builder()
                 .username("kaguya")
                 .password(passwordEncoderConfiguration.passwordEncoder().encode("kanojo"))
-                .roles(ApplicationUserRole.ROLE_USER.name())
+                .roles(ApplicationUserRole.USER.name())
                 .build();
 
         UserDetails userAdmin = User.builder()
                 .username("hikaru")
                 .password(passwordEncoderConfiguration.passwordEncoder().encode("kyun"))
-                .roles(ApplicationUserRole.ROLE_ADMIN.name())
+                .roles(ApplicationUserRole.ADMIN.name())
                 .build();
 
         return new InMemoryUserDetailsManager(
