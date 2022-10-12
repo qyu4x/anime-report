@@ -13,6 +13,8 @@ import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 
+import java.util.concurrent.TimeUnit;
+
 
 @Configuration
 @EnableWebSecurity
@@ -44,7 +46,7 @@ public class ApplicationSecurityConfig  {
                 .loginPage("/login").permitAll()
                 .defaultSuccessUrl("/welcome", true)
                 .and()
-                .rememberMe() // default is 2 weeks
+                .rememberMe().tokenValiditySeconds((int) TimeUnit.DAYS.toSeconds(30)) // default is 2 weeks, but this settig is 30 day
                 .and()
                 .build();
     }
