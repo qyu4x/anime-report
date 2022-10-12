@@ -12,6 +12,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import java.util.concurrent.TimeUnit;
 
@@ -47,6 +48,12 @@ public class ApplicationSecurityConfig  {
                 .defaultSuccessUrl("/welcome", true)
                 .and()
                 .rememberMe().tokenValiditySeconds((int) TimeUnit.DAYS.toSeconds(30)) // default is 2 weeks, but this settig is 30 day
+                .and()
+                .logout()
+                .logoutUrl("/logout")
+                .logoutRequestMatcher(new AntPathRequestMatcher("/logout", "GET")) // use this, if csrf is disable, to secure our api, remove this line , if yours csrf is enable(default), because method is post not get
+                .clearAuthentication(true)
+                .deleteCookies("remember-me", "JSESSIONID").logoutSuccessUrl("/login")
                 .and()
                 .build();
     }
