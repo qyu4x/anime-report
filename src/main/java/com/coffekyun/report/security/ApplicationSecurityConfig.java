@@ -41,6 +41,8 @@ public class ApplicationSecurityConfig  {
                 .and()
                 //.httpBasic()
                 .formLogin()
+                .loginPage("/login").permitAll()
+                .defaultSuccessUrl("/welcome")
                 .and()
                 .build();
     }
