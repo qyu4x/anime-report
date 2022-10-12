@@ -42,7 +42,9 @@ public class ApplicationSecurityConfig  {
                 //.httpBasic()
                 .formLogin()
                 .loginPage("/login").permitAll()
-                .defaultSuccessUrl("/welcome")
+                .defaultSuccessUrl("/welcome", true)
+                .and()
+                .rememberMe() // default is 2 weeks
                 .and()
                 .build();
     }
