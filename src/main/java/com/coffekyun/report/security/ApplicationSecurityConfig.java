@@ -1,8 +1,14 @@
 package com.coffekyun.report.security;
 
+import co.elastic.clients.elasticsearch.nodes.Http;
+import com.coffekyun.report.auth.ApplicationUserDetailsService;
 import com.coffekyun.report.model.enums.ApplicationUserRole;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -22,10 +28,14 @@ import java.util.concurrent.TimeUnit;
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class ApplicationSecurityConfig  {
 
-    private PasswordEncoderConfiguration passwordEncoderConfiguration;
+    private final PasswordEncoderConfiguration passwordEncoderConfiguration;
 
-    public ApplicationSecurityConfig(PasswordEncoderConfiguration passwordEncoderConfiguration) {
+    private final ApplicationUserDetailsService applicationUserDetailsService;
+
+    @Autowired
+    public ApplicationSecurityConfig(PasswordEncoderConfiguration passwordEncoderConfiguration,ApplicationUserDetailsService applicationUserDetailsService) {
         this.passwordEncoderConfiguration = passwordEncoderConfiguration;
+        this.applicationUserDetailsService = applicationUserDetailsService;
     }
 
     @Bean
@@ -63,30 +73,47 @@ public class ApplicationSecurityConfig  {
     }
 
     @Bean
-    public UserDetailsService userConfiguration() {
-        UserDetails userKanojo = User.builder()
-                .username("kaguya")
-                .password(passwordEncoderConfiguration.passwordEncoder().encode("kanojo"))
-                .authorities(ApplicationUserRole.USER.getGrantedAuthorities())
-//                .roles(ApplicationUserRole.USER.name())
-                .build();
+    public AuthenticationManager authenticationManager(HttpSecurity httpSecurity) throws Exception {
+        AuthenticationManagerBuilder authenticationManagerBuilder
+                = httpSecurity.getSharedObject(AuthenticationManagerBuilder.class);
 
-        UserDetails userAdmin = User.builder()
-                .username("hikaru")
-                .password(passwordEncoderConfiguration.passwordEncoder().encode("kyun"))
-                .authorities(ApplicationUserRole.ADMIN.getGrantedAuthorities())
-//                .roles(ApplicationUserRole.ADMIN.name())
-                .build();
-
-        UserDetails userAdminTrainee = User.builder()
-                .username("sagiri")
-                .password(passwordEncoderConfiguration.passwordEncoder().encode("kyun"))
-                .authorities(ApplicationUserRole.ADMIN_TRAINEE.getGrantedAuthorities())
-//                .roles(ApplicationUserRole.ADMIN_TRAINEE.name())
-                .build();
-
-        return new InMemoryUserDetailsManager(
-                userKanojo, userAdmin, userAdminTrainee
-        );
+        return authenticationManagerBuilder
+                .authenticationProvider(daoAuthenticationProvider()).build();
     }
+
+    @Bean
+    public DaoAuthenticationProvider daoAuthenticationProvider() {
+        DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider();
+        daoAuthenticationProvider.setPasswordEncoder(passwordEncoderConfiguration.passwordEncoder());
+        daoAuthenticationProvider.setUserDetailsService(applicationUserDetailsService);
+        return daoAuthenticationProvider;
+    }
+
+//    @Bean
+//    public UserDetailsService userConfiguration() {
+//        UserDetails userKanojo = User.builder()
+//                .username("kaguya")
+//                .password(passwordEncoderConfiguration.passwordEncoder().encode("kanojo"))
+//                .authorities(ApplicationUserRole.USER.getGrantedAuthorities())
+////                .roles(ApplicationUserRole.USER.name())
+//                .build();
+//
+//        UserDetails userAdmin = User.builder()
+//                .username("hikaru")
+//                .password(passwordEncoderConfiguration.passwordEncoder().encode("kyun"))
+//                .authorities(ApplicationUserRole.ADMIN.getGrantedAuthorities())
+////                .roles(ApplicationUserRole.ADMIN.name())
+//                .build();
+//
+//        UserDetails userAdminTrainee = User.builder()
+//                .username("sagiri")
+//                .password(passwordEncoderConfiguration.passwordEncoder().encode("kyun"))
+//                .authorities(ApplicationUserRole.ADMIN_TRAINEE.getGrantedAuthorities())
+////                .roles(ApplicationUserRole.ADMIN_TRAINEE.name())
+//                .build();
+//
+//        return new InMemoryUserDetailsManager(
+//                userKanojo, userAdmin, userAdminTrainee
+//        );
+//    }
 }

@@ -1,7 +1,8 @@
-package com.coffekyun.report.service;
+package com.coffekyun.report.service.impl;
 
 import com.coffekyun.report.entity.Anime;
 import com.coffekyun.report.repository.AnimeRepository;
+import com.coffekyun.report.service.AnimeService;
 import lombok.extern.slf4j.Slf4j;
 import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
