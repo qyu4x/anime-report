@@ -6,17 +6,23 @@ import com.coffekyun.report.model.enums.ApplicationUserRole;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;;
+import org.springframework.core.annotation.Order;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
@@ -26,7 +32,7 @@ import java.util.concurrent.TimeUnit;
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
-public class ApplicationSecurityConfig  {
+public class ApplicationSecurityConfig {
 
     private final PasswordEncoderConfiguration passwordEncoderConfiguration;
 
@@ -39,11 +45,15 @@ public class ApplicationSecurityConfig  {
     }
 
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain filterChain(HttpSecurity http,
+                                           final AuthenticationConfiguration authenticationConfiguration) throws Exception {
         return http
 //                .csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
 //                .and()
                 .csrf().disable()
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .and()
+                .addFilter(new UsernamePasswordAuthenticationFilter(authenticationConfiguration.getAuthenticationManager()))
                 .authorizeRequests()
                 .antMatchers("/", "/api/*", "index", "/css/*", "/js/*").permitAll()
                 .antMatchers("/api/anime/pdf").hasRole(ApplicationUserRole.USER.name())
@@ -53,22 +63,22 @@ public class ApplicationSecurityConfig  {
                 .authenticated()
                 .and()
                 //.httpBasic()
-                .formLogin()
-                    .loginPage("/login").permitAll()
-                    .defaultSuccessUrl("/welcome", true)
-                    .usernameParameter("username") // if you want to do customization, for form param request
-                    .passwordParameter("password")
-                .and()
-                .rememberMe().tokenValiditySeconds((int) TimeUnit.DAYS.toSeconds(30)) // default is 2 weeks, but this settig is 30 day
-                    .key("x-secure-nya")
-                    .rememberMeParameter("remember-me")
-                .and()
-                .logout()
-                    .logoutUrl("/logout")
-                    .logoutRequestMatcher(new AntPathRequestMatcher("/logout", "GET")) // use this, if csrf is disable, to secure our api, remove this line , if yours csrf is enable(default), because method is post not get
-                    .clearAuthentication(true)
-                    .deleteCookies("remember-me", "JSESSIONID").logoutSuccessUrl("/login")
-                .and()
+//                .formLogin()
+//                    .loginPage("/login").permitAll()
+//                    .defaultSuccessUrl("/welcome", true)
+//                    .usernameParameter("username") // if you want to do customization, for form param request
+//                    .passwordParameter("password")
+//                .and()
+//                .rememberMe().tokenValiditySeconds((int) TimeUnit.DAYS.toSeconds(30)) // default is 2 weeks, but this settig is 30 day
+//                    .key("x-secure-nya")
+//                    .rememberMeParameter("remember-me")
+//                .and()
+//                .logout()
+//                    .logoutUrl("/logout")
+//                    .logoutRequestMatcher(new AntPathRequestMatcher("/logout", "GET")) // use this, if csrf is disable, to secure our api, remove this line , if yours csrf is enable(default), because method is post not get
+//                    .clearAuthentication(true)
+//                    .deleteCookies("remember-me", "JSESSIONID").logoutSuccessUrl("/login")
+//                .and()
                 .build();
     }
 
