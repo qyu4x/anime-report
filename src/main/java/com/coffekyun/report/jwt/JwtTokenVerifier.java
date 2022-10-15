@@ -37,7 +37,7 @@ public class JwtTokenVerifier extends OncePerRequestFilter {
 
         String authorization = request.getHeader(jwtConfiguration.getAuthorizationHttpHeader());
 
-        if (Strings.isNullOrEmpty(authorization) || !authorization.startsWith("Bearer ")) {
+        if (Strings.isNullOrEmpty(authorization) || !authorization.startsWith(jwtConfiguration.getTokenPrefix())) {
             filterChain.doFilter(request, response);
             return;
         }
