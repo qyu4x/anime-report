@@ -1,5 +1,6 @@
 package com.coffekyun.report.jwt;
 
+import com.coffekyun.report.configuration.JwtConfiguration;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
@@ -23,10 +24,11 @@ public class JwtUsernameAndPasswordAuthFilter extends UsernamePasswordAuthentica
 
     private final AuthenticationManager authenticationManager;
 
-    public JwtUsernameAndPasswordAuthFilter(AuthenticationManager authenticationManager) {
+    private final JwtConfiguration jwtConfiguration;
+    public JwtUsernameAndPasswordAuthFilter(AuthenticationManager authenticationManager, JwtConfiguration jwtConfiguration) {
         this.authenticationManager = authenticationManager;
+        this.jwtConfiguration = jwtConfiguration;
     }
-
 
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
@@ -48,15 +50,14 @@ public class JwtUsernameAndPasswordAuthFilter extends UsernamePasswordAuthentica
     @Override
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response,
                                             FilterChain chain, Authentication authResult) throws IOException, ServletException {
-        String key = "onichan-baka-nya onichan-baka-nya onichan-baka-nya onichan-baka-nya onichan-baka-nya onichan-baka-nya onichan-baka-nya";
         String token = Jwts.builder()
                 .setSubject(authResult.getName())
-                .claim("authorities", authResult.getAuthorities())
+                .claim(jwtConfiguration.getKeyAuthority(), authResult.getAuthorities())
                 .setIssuedAt(new Date())
-                .setExpiration(java.sql.Date.valueOf(LocalDate.now().plusMonths(6)))
-                .signWith(Keys.hmacShaKeyFor(key.getBytes()))
+                .setExpiration(java.sql.Date.valueOf(LocalDate.now().plusDays(jwtConfiguration.getTokenExpirationAfterDay())))
+                .signWith(jwtConfiguration.getSecretKey())
                 .compact();
 
-        response.addHeader("Authorization", "Bearer " + token);
+        response.addHeader(jwtConfiguration.getAuthorizationHttpHeader(), jwtConfiguration.getTokenPrefix() + token);
     }
 }

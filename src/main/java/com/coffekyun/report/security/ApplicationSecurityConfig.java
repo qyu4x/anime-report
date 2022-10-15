@@ -1,13 +1,13 @@
 package com.coffekyun.report.security;
 
-import co.elastic.clients.elasticsearch.nodes.Http;
 import com.coffekyun.report.auth.ApplicationUserDetailsService;
+import com.coffekyun.report.configuration.JwtConfiguration;
+import com.coffekyun.report.jwt.JwtTokenVerifier;
 import com.coffekyun.report.jwt.JwtUsernameAndPasswordAuthFilter;
 import com.coffekyun.report.model.enums.ApplicationUserRole;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;;
-import org.springframework.core.annotation.Order;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -15,19 +15,8 @@ import org.springframework.security.config.annotation.authentication.configurati
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
-import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
-
-import java.util.concurrent.TimeUnit;
 
 
 @Configuration
@@ -39,10 +28,15 @@ public class ApplicationSecurityConfig {
 
     private final ApplicationUserDetailsService applicationUserDetailsService;
 
+    private final JwtConfiguration jwtConfiguration;
+
     @Autowired
-    public ApplicationSecurityConfig(PasswordEncoderConfiguration passwordEncoderConfiguration,ApplicationUserDetailsService applicationUserDetailsService) {
+    public ApplicationSecurityConfig(PasswordEncoderConfiguration passwordEncoderConfiguration,
+                                     ApplicationUserDetailsService applicationUserDetailsService,
+                                     JwtConfiguration jwtConfiguration) {
         this.passwordEncoderConfiguration = passwordEncoderConfiguration;
         this.applicationUserDetailsService = applicationUserDetailsService;
+        this.jwtConfiguration = jwtConfiguration;
     }
 
     @Bean
@@ -54,7 +48,8 @@ public class ApplicationSecurityConfig {
                 .csrf().disable()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
-                .addFilter(new JwtUsernameAndPasswordAuthFilter(authenticationConfiguration.getAuthenticationManager()))
+                .addFilter(new JwtUsernameAndPasswordAuthFilter(authenticationConfiguration.getAuthenticationManager(), jwtConfiguration))
+                .addFilterAfter(new JwtTokenVerifier(jwtConfiguration), JwtUsernameAndPasswordAuthFilter.class)
                 .authorizeRequests()
                 .antMatchers("/", "/api/*", "index", "/css/*", "/js/*").permitAll()
                 .antMatchers("/api/anime/pdf").hasRole(ApplicationUserRole.USER.name())
