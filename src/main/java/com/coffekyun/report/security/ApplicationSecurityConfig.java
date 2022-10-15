@@ -2,6 +2,7 @@ package com.coffekyun.report.security;
 
 import co.elastic.clients.elasticsearch.nodes.Http;
 import com.coffekyun.report.auth.ApplicationUserDetailsService;
+import com.coffekyun.report.jwt.JwtUsernameAndPasswordAuthFilter;
 import com.coffekyun.report.model.enums.ApplicationUserRole;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -53,7 +54,7 @@ public class ApplicationSecurityConfig {
                 .csrf().disable()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
-                .addFilter(new UsernamePasswordAuthenticationFilter(authenticationConfiguration.getAuthenticationManager()))
+                .addFilter(new JwtUsernameAndPasswordAuthFilter(authenticationConfiguration.getAuthenticationManager()))
                 .authorizeRequests()
                 .antMatchers("/", "/api/*", "index", "/css/*", "/js/*").permitAll()
                 .antMatchers("/api/anime/pdf").hasRole(ApplicationUserRole.USER.name())
