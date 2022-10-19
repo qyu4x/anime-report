@@ -83,6 +83,7 @@ public class ApplicationSecurityConfig {
         AuthenticationManagerBuilder authenticationManagerBuilder
                 = httpSecurity.getSharedObject(AuthenticationManagerBuilder.class);
 
+        // authenticationManagerBuilder.userDetailsService(applicationUserDetailsService).passwordEncoder(passwordEncoderConfiguration.passwordEncoder())
         return authenticationManagerBuilder
                 .authenticationProvider(daoAuthenticationProvider()).build();
     }
